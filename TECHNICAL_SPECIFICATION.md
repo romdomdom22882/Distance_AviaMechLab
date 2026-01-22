@@ -220,10 +220,71 @@
      - `updated_at`
 5. Таблица **KiPostavSoft (Поставщик ПО)**:
    - структура и обязательные поля **аналогичны** KiPostavHard.
-6. В админке должны быть отображены индикаторы:
+6. Таблица **KiPostavSoftVerPo (Версия загружаемого ПО)**:
+   - обязательные поля:
+     - `id`
+     - `id_ki_post` (связь с KiPostavSoft)
+     - `ki_id` (связь с Firma)
+     - `v_po`
+     - `shifr_po`
+     - `note`
+     - `status`
+     - `dat_out`
+     - `created_by` (кто добавил)
+     - `created_at`
+     - `updated_at`
+7. Таблица **KiZn (КИ с заводскими номерами)**:
+   - обязательные поля:
+     - `id`
+     - `id_ki` (связь с KiList)
+     - `id_postav_hard` (связь с KiPostavHard)
+     - `zn1`
+     - `zn2`
+     - `v_sostave`
+     - `prim`
+     - `data_izg_post`
+     - `data_izg_oak`
+     - `data_postav_post`
+     - `data_postav_oak`
+     - `data_ust_post`
+     - `data_ust_oak`
+     - `gs_post_end`
+     - `gs_oak_end`
+     - `gsh_post_end`
+     - `gsh_oak_end`
+     - `gse_post_end`
+     - `gse_oak_end`
+     - `total_hh_mm`
+     - `total_kol_posad`
+     - `status`
+     - `created_by` (кто добавил)
+     - `created_at`
+     - `updated_at`
+8. Таблица **KiGdeIstor (История изделия KiZn)**:
+   - обязательные поля:
+     - `id`
+     - `id_kizn` (связь с KiZn)
+     - `id_bort` (связь с mod_exploatation.Bort)
+     - `hh`
+     - `mm`
+     - `monthly_hh_mm`
+     - `monthly_posad`
+     - `total_hh_mm`
+     - `total_posad`
+     - `status` (список: В эксплуатации, в ремонте, отремонтировано, выпущено,
+       в простое, на складе, списано, забраковано)
+     - `nom_ust`
+     - `d_us`
+     - `d_zam`
+     - `dokum`
+     - `pri_zam`
+9. В админке должны быть отображены индикаторы:
    - количество КИ;
    - количество фирм;
    - количество поставщиков АЧ и ПО;
+   - количество версий ПО;
+   - количество КИ с заводскими номерами;
+   - количество записей истории изделий;
    - количество записей, созданных за последние 7/30 дней.
 
 ---
@@ -260,6 +321,16 @@
   created_by, created_at, updated_at.
 - **KiPostavSoft**: id, ki_id, id_post, tip_ki_post, ki_naim_rus,
   created_by, created_at, updated_at.
+- **KiPostavSoftVerPo**: id, id_ki_post, ki_id, v_po, shifr_po, note,
+  status, dat_out, created_by, created_at, updated_at.
+- **KiZn**: id, id_ki, id_postav_hard, zn1, zn2, v_sostave, prim,
+  data_izg_post, data_izg_oak, data_postav_post, data_postav_oak,
+  data_ust_post, data_ust_oak, gs_post_end, gs_oak_end, gsh_post_end,
+  gsh_oak_end, gse_post_end, gse_oak_end, total_hh_mm, total_kol_posad,
+  status, created_by, created_at, updated_at.
+- **KiGdeIstor**: id, id_kizn, id_bort, hh, mm, monthly_hh_mm,
+  monthly_posad, total_hh_mm, total_posad, status, nom_ust, d_us, d_zam,
+  dokum, pri_zam.
 
 ---
 
@@ -282,3 +353,5 @@
 10. Разделы «Замечания» и «Предложения» принимают обращения и сохраняют их.
 11. Приложение mod_production содержит все указанные таблицы и отображается
     в админке с индикаторами и корректной обработкой файлов `ris` и `ss`.
+12. Таблицы KiPostavSoftVerPo, KiZn и KiGdeIstor доступны в админке и
+    используют корректные связи и статусы согласно требованиям.
