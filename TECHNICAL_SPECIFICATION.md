@@ -192,9 +192,11 @@
      - `ki_name`
      - `ki_tip`
      - `ki_tip_proizv`
+     - `ki_tip_fil`
+     - `ki_tip_jak`
      - `ris` (фотографии)
      - `ss` (файлы)
-     - `created_by` (кто добавил)
+     - `created_by` (кто добавил, в модели допускается имя поля `author`)
      - `created_at`
      - `updated_at`
    - требования к полям `ris` и `ss`:
@@ -224,19 +226,20 @@
    - обязательные поля:
      - `id`
      - `id_ki_post` (связь с KiPostavSoft)
-     - `ki_id` (связь с Firma)
+     - `ki_id` (связь с KIList)
+     - `id_post` (связь с Firma)
      - `v_po`
      - `shifr_po`
      - `note`
      - `status`
      - `dat_out`
-     - `created_by` (кто добавил)
+     - `created_by` (кто добавил, в модели допускается имя поля `author`)
      - `created_at`
      - `updated_at`
 7. Таблица **KiZn (КИ с заводскими номерами)**:
    - обязательные поля:
      - `id`
-     - `id_ki` (связь с KiList)
+     - `id_ki` (связь с KIList)
      - `id_postav_hard` (связь с KiPostavHard)
      - `zn1`
      - `zn2`
@@ -257,14 +260,14 @@
      - `total_hh_mm`
      - `total_kol_posad`
      - `status`
-     - `created_by` (кто добавил)
+     - `created_by` (кто добавил, в модели допускается имя поля `author`)
      - `created_at`
      - `updated_at`
 8. Таблица **KiGdeIstor (История изделия KiZn)**:
    - обязательные поля:
      - `id`
      - `id_kizn` (связь с KiZn)
-     - `id_bort` (связь с mod_exploatation.Bort)
+     - `id_bort` (связь с mod_exploatation.Aircraft/Bort)
      - `hh`
      - `mm`
      - `monthly_hh_mm`
@@ -278,6 +281,14 @@
      - `d_zam`
      - `dokum`
      - `pri_zam`
+   - валидации:
+     - `mm` в диапазоне 0–59, `hh` >= 0;
+     - `d_zam` не раньше `d_us`.
+   - расчетные правила:
+     - `monthly_hh_mm` вычисляется на основе `hh` и `mm`;
+     - накопленные значения пересчитываются по всем записям `KiGdeIstor`;
+     - агрегаты `total_hh_mm`, `total_kol_posad` и `status` в `KiZn`
+       обновляются по последней записи истории.
 9. В админке должны быть отображены индикаторы:
    - количество КИ;
    - количество фирм;
@@ -314,21 +325,21 @@
 - **Notifications**: id, user_id, type, payload, is_read, created_at.
 - **Documents**: id, slug, title, file, version, updated_at, uploaded_by.
 - **Feedback**: id, user_id, type, message, status, created_at.
-- **Ki**: id, ki_name, ki_tip, ki_tip_proizv, ris, ss, created_by,
-  created_at, updated_at.
+- **Ki**: id, ki_name, ki_tip, ki_tip_proizv, ki_tip_fil, ki_tip_jak,
+  ris, ss, created_by (author), created_at, updated_at.
 - **Firma**: id, firm_short, country, firm_long, prim.
 - **KiPostavHard**: id, ki_id, id_post, tip_ki_post, ki_naim_rus,
   created_by, created_at, updated_at.
 - **KiPostavSoft**: id, ki_id, id_post, tip_ki_post, ki_naim_rus,
   created_by, created_at, updated_at.
-- **KiPostavSoftVerPo**: id, id_ki_post, ki_id, v_po, shifr_po, note,
-  status, dat_out, created_by, created_at, updated_at.
-- **KiZn**: id, id_ki, id_postav_hard, zn1, zn2, v_sostave, prim,
+- **KiPostavSoftVerPo**: id, id_ki_post, ki_id, id_post, v_po, shifr_po,
+  note, status, dat_out, created_by, created_at, updated_at.
+- **KiZn**: id (id_kizn), id_ki, id_postav_hard, zn1, zn2, v_sostave, prim,
   data_izg_post, data_izg_oak, data_postav_post, data_postav_oak,
   data_ust_post, data_ust_oak, gs_post_end, gs_oak_end, gsh_post_end,
   gsh_oak_end, gse_post_end, gse_oak_end, total_hh_mm, total_kol_posad,
   status, created_by, created_at, updated_at.
-- **KiGdeIstor**: id, id_kizn, id_bort, hh, mm, monthly_hh_mm,
+- **KiGdeIstor**: id, id_kizn, id_bort (Aircraft/Bort), hh, mm, monthly_hh_mm,
   monthly_posad, total_hh_mm, total_posad, status, nom_ust, d_us, d_zam,
   dokum, pri_zam.
 
