@@ -289,13 +289,38 @@
      - накопленные значения пересчитываются по всем записям `KiGdeIstor`;
      - агрегаты `total_hh_mm`, `total_kol_posad` и `status` в `KiZn`
        обновляются по последней записи истории.
-9. В админке должны быть отображены индикаторы:
+9. Таблица **KiZnSoft (установленное ПО на KiZn)**:
+   - обязательные поля:
+     - `id`
+     - `id_kizn` (связь с KiZn)
+     - `id_post_soft` (связь с KiPostavSoft)
+     - `id_ver_soft` (связь с KiPostavSoftVerPo)
+     - `v_po`
+     - `data_po`
+     - `dokum`
+     - `prim`
+10. Таблица **KiPoIstor (история устанавливаемого ПО на KiZn)**:
+    - обязательные поля:
+      - `id`
+      - `id_ki_zn_soft` (связь с KiZnSoft)
+      - `id_kizn` (связь с KiZn)
+      - `id_post_po` (связь с KiPostavSoft)
+      - `id_ver_soft` (связь с KiPostavSoftVerPo)
+      - `v_po`
+      - `d_us`
+      - `d_zam`
+      - `dokum`
+      - `pri_zam`
+      - `nom_ust`
+11. В админке должны быть отображены индикаторы:
    - количество КИ;
    - количество фирм;
    - количество поставщиков АЧ и ПО;
    - количество версий ПО;
    - количество КИ с заводскими номерами;
    - количество записей истории изделий;
+   - количество установленного ПО на KiZn;
+   - количество записей истории ПО;
    - количество записей, созданных за последние 7/30 дней.
 
 ---
@@ -342,6 +367,10 @@
 - **KiGdeIstor**: id, id_kizn, id_bort (Aircraft/Bort), hh, mm, monthly_hh_mm,
   monthly_posad, total_hh_mm, total_posad, status, nom_ust, d_us, d_zam,
   dokum, pri_zam.
+- **KiZnSoft**: id, id_kizn, id_post_soft, id_ver_soft, v_po, data_po,
+  dokum, prim.
+- **KiPoIstor**: id, id_ki_zn_soft, id_kizn, id_post_po, id_ver_soft, v_po,
+  d_us, d_zam, dokum, pri_zam, nom_ust.
 
 ---
 
@@ -364,5 +393,6 @@
 10. Разделы «Замечания» и «Предложения» принимают обращения и сохраняют их.
 11. Приложение mod_production содержит все указанные таблицы и отображается
     в админке с индикаторами и корректной обработкой файлов `ris` и `ss`.
-12. Таблицы KiPostavSoftVerPo, KiZn и KiGdeIstor доступны в админке и
-    используют корректные связи и статусы согласно требованиям.
+12. Таблицы KiPostavSoftVerPo, KiZn, KiGdeIstor, KiZnSoft и KiPoIstor
+    доступны в админке и используют корректные связи и статусы согласно
+    требованиям.
